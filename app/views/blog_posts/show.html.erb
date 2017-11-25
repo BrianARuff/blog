@@ -1,0 +1,50 @@
+<div class="" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= @blog_post.title %></h5>
+      </div>
+      <div class="modal-body">
+      	By: <%= @blog_post.author %>
+        <p><%= @blog_post.blog_entry %></p>
+      </div>
+      <div class="modal-footer">
+      	<% if user_signed_in? %>
+        <%= link_to "Edit", edit_blog_post_path(@blog_post), class: "btn btn-warning" %>
+        <% end %>
+      	<%= link_to "All Posts", blog_posts_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div><br>
+<h2 style="text-align: center; text-decoration: underline;">Total Comments: <%= @blog_post.comments.count %></h2>
+<br>
+<% if user_signed_in? %>
+<h3>Add Comments:</h3>
+<%= render 'comments/form2' %>
+<% end %>
+<br>
+
+<div class="row">
+<% @blog_post.comments.each do |comment| %>
+  <% unless comment.created_at.blank?%>
+  <div style="width: 100%" class="dialogbox">
+    <div class="body">
+      <span class="tip tip-left"></span>
+      <div class="message" style="clear: both;">
+        <ul>
+          <li style="list-style: none;"><%= comment.author %></li><hr>
+          <li style="word-wrap: break-word; list-style: none;"><%= comment.comment_entry %></li><hr>
+          <li style="list-style: none;">Created: <%= time_ago_in_words(comment.created_at) %></li><hr>
+          <% if user_signed_in? %>
+          <p><%= link_to 'Edit', edit_blog_post_comment_path(@blog_post.comments) %></p>
+
+          <li style="list-style: none;"><%= link_to 'Delete', [comment.blog_post,comment], method: :delete, data: {confirm: "Are you sure?"} %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<%end%>
+<%end%>
+</div>

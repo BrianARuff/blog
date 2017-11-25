@@ -1,0 +1,30 @@
+<h1>All Blog Posts</h1>
+<div class="row">
+<% @blog_posts.each_slice(1) do |slice| %>
+<% slice.each do |blog_post| %>
+<div style="width: 20rem; margin: 5px;" class="" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= blog_post.title %></h5>
+      </div>
+      <div class="modal-body">
+      	By: <%= blog_post.author %><br>
+        <p style="word-wrap: break-word;"><%= blog_post.blog_entry %></p>
+      </div>
+      <div class="modal-footer">
+      	<%= link_to "Show", blog_post, class: "btn btn-primary" %>
+        <% if user_signed_in? %>
+      	<%= link_to "Edit", edit_blog_post_path(blog_post), class: "btn btn-warning" %>
+      	<%= link_to "Delete", blog_post_path(blog_post), method: :delete, data: {confirm: "Are your sure!?"}, class: "btn btn-danger" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+ </div>
+ <% end %>
+ <%end %>
+</div>
+<% if user_signed_in? %>
+<%= link_to "Create New Post!!", new_blog_post_path, class: "btn btn-primary" %>
+<% end %>
